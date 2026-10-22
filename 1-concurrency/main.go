@@ -4,29 +4,34 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"sync"
 )
 
 func main() {
-	slice := []int{}
+
 	ch := make(chan int)
-	var wg sync.WaitGroup
-	wg.Add(1)
+	ch2 := make(chan int)
+	//var wg sync.WaitGroup
+
 	go Write(ch)
 	go func() {
-		num := <-ch
-		sqrt := int(math.Pow(float64(num), 2))
-		slice = append(slice, sqrt)
-		wg.Done()
+		for num := range ch {
+			sqrt := int(math.Pow(float64(num), 2))
+			ch2 <- sqrt
+		}
+		close(ch2)
 	}()
-	wg.Wait()
-	fmt.Println(slice)
+
+	for res := range ch2 {
+		fmt.Println(res)
+	}
+
 }
 
 func Write(ch chan int) {
+	defer close(ch)
 	slice := []int{}
 	for i := 0; i < 10; i++ {
-		num := rand.Intn(100)
+		num := rand.Intn(101)
 		slice = append(slice, num)
 	}
 	fmt.Println("Write:", slice)
