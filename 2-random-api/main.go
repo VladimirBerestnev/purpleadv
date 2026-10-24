@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand/v2"
 	"net/http"
@@ -18,5 +19,10 @@ func main() {
 }
 
 func homeRandom(w http.ResponseWriter, req *http.Request) {
-	fmt.Println(rand.IntN(7))
+	number := rand.IntN(6) + 1
+	numberByte, err := json.Marshal(number)
+	if err != nil {
+		fmt.Println(err)
+	}
+	w.Write(numberByte)
 }
