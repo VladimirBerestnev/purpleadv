@@ -9,13 +9,10 @@ import (
 
 func main() {
 	router := http.NewServeMux()
-	server := http.Server{
-		Addr:    ":8081",
-		Handler: router,
-	}
+
 	router.HandleFunc("/random", homeRandom)
 
-	server.ListenAndServe()
+	http.ListenAndServe(":8080", router)
 }
 
 func homeRandom(w http.ResponseWriter, req *http.Request) {
