@@ -3,18 +3,22 @@ package verify
 import (
 	"encoding/json"
 	"fmt"
-	"hash/fnv"
 	"net/http"
 	"net/smtp"
 	"os"
 	"validation/configs"
 
+	"github.com/feiin/randomhash"
 	"github.com/jordan-wright/email"
 )
 
 type Verify struct {
 	Email email.Email `json:"email"`
 	Hash  string      `json:"hash"`
+}
+
+type SendRequest struct {
+	Email string `json:"email"`
 }
 
 func GetEmail() *email.Email {
@@ -38,8 +42,11 @@ func VerifyHandler(router *http.ServeMux) {
 func (verify Verify) Send() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		email := GetEmail()
-		hash := hash("Golang")
-		link := fmt.Sprintf("<a>http://localhost:8082/verify/%d</a>", hash)
+		var SendRequest SendRequest
+		json.NewDecoder(req.Body).Decode(&SendRequest)
+		email.To = []string{SendRequest.Email}
+		hash := hash()
+		link := fmt.Sprintf("<a href=\"http://localhost:8082/verify/%s\">http://localhost:8082/verify/%s</a>", hash, hash)
 		email.HTML = []byte(link)
 
 		verify.Email = *email
@@ -56,10 +63,14 @@ func (verify Verify) Send() http.HandlerFunc {
 
 }
 
-func hash(s string) string {
-	h := fnv.New32a()
-	h.Write([]byte(s))
-	return string(h.Sum32())
+func hash() string {
+	randomHash := randomhash.New("")
+	// Генерация хеша длиной 10 символов
+	result, err := randomHash.GenerateHash(10)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return result
 }
 
 func (verify Verify) Validate(w http.ResponseWriter, req *http.Request) {
@@ -75,10 +86,11 @@ func (verify Verify) Validate(w http.ResponseWriter, req *http.Request) {
 		fmt.Println("Ошибка Unmarshal")
 		return
 	}
-	if hash != string(verifyRead.Hash) {
+	if hash != verifyRead.Hash {
 		w.Write([]byte("false"))
 		return
 	}
+	os.Remove("data.json")
 	w.Write([]byte("true"))
 }
 
