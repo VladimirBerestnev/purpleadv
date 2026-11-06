@@ -1,0 +1,4 @@
+github.com/feiin/randomhash v0.0.0-20181223130846-37600aa53f20 h1:ueKgxfc0ULgBUJr50iYq6eo2aaV9W6vd8xnX9xz8XJ4=
+github.com/feiin/randomhash v0.0.0-20181223130846-37600aa53f20/go.mod h1:uZPBuiNbzRmA62078a8WHrLcN/My5K+jpX7Auh8S3gY=
+github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible h1:jdpOPRN1zP63Td1hDQbZW73xKmzDvZHzVdNYxhnTMDA=
+github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible/go.mod h1:1c7szIrayyPPB/987hsnvNzLushdWf4o/79s3P08L8A=
