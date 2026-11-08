@@ -20,10 +20,12 @@ func Validate() http.HandlerFunc {
 		err := json.NewDecoder(req.Body).Decode(&product)
 		if err != nil {
 			res.Json(w, err.Error(), 402)
+			return
 		}
 		errValid := IsValid(product)
 		if errValid != nil {
-			res.Json(w, err.Error(), 400)
+			res.Json(w, errValid.Error(), 400)
+			return
 		}
 	}
 
