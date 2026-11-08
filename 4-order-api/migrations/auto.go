@@ -18,5 +18,8 @@ func main() {
 	if err != nil {
 		panic("Error open connection bd")
 	}
-	db.AutoMigrate(&product.Product{})
+	errMigrate := db.AutoMigrate(&product.Product{})
+	if errMigrate != nil {
+		panic("Migration error")
+	}
 }

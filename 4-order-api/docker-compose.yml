@@ -6,5 +6,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       PGDATA: /data/postgres
+    volumes: 
+      - ./postgres-data:/data/postgres 750 
     ports: 
       - "5432:5432"
+
+volumes:
+  postgres_data:
+
