@@ -5,12 +5,14 @@ import (
 	"net/http"
 	"order-api/configs"
 	"order-api/pkg/db"
-	"order-api/verify"
+	"order-api/pkg/product"
 )
 
 func main() {
 	conf := configs.LoadConfig()
-	_ = db.NewDb(conf)
+	db := db.NewDb(conf)
+
+	repo := product.NewRepo(db)
 
 	router := http.NewServeMux()
 	server := http.Server{
@@ -18,7 +20,9 @@ func main() {
 		Handler: router,
 	}
 
-	verify.VerifyHandler(router)
+	product.NewProductHandler(router, product.ProductHandlerCfg{
+		Repo: repo,
+	})
 	fmt.Println("Server is running...")
 	server.ListenAndServe()
 
