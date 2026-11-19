@@ -16,8 +16,8 @@ func HandleBody[T any](w *http.ResponseWriter, r *http.Request) (*T, error) {
 
 	errValid := Validate(payLoad)
 	if errValid != nil {
-		res.Json(*w, err.Error(), http.StatusBadRequest)
-		return nil, err
+		res.Json(*w, errValid.Error(), http.StatusBadRequest)
+		return nil, errValid
 	}
 
 	return &payLoad, nil
