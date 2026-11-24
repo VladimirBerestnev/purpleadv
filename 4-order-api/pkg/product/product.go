@@ -24,7 +24,7 @@ type ProductHandler struct {
 type ProductRequest struct {
 	Name   string         `json:"name" validate:"required"`
 	Desc   string         `json:"desc" validate:"required"`
-	Price  int            `json:"price" validate:"required"`
+	Price  int            `json:"price" validate:"required,gt=0"`
 	Images pq.StringArray `json:"images" gorm:"type:text[]"`
 }
 

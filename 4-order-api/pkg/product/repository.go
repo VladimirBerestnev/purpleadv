@@ -1,6 +1,7 @@
 package product
 
 import (
+	"errors"
 	"order-api/pkg/db"
 
 	"gorm.io/gorm/clause"
@@ -35,8 +36,8 @@ func (repo *Repo) GetById(id uint64) (*Product, error) {
 
 func (repo *Repo) Update(product *Product) (*Product, error) {
 	result := repo.db.DB.Clauses(clause.Returning{}).Updates(product)
-	if result.Error != nil {
-		return nil, result.Error
+	if result.RowsAffected == 0 {
+		return nil, errors.New("link not found")
 	}
 	return product, nil
 }
