@@ -23,7 +23,6 @@ func (handler *ProductHandler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body, err := req.HandleBody[ProductRequest](&w, r)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		product := Product{Name: body.Name, Desc: body.Desc, Price: body.Price, Images: body.Images}
