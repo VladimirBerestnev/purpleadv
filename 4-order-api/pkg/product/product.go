@@ -1,6 +1,8 @@
 package product
 
 import (
+	"order-api/configs"
+
 	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
@@ -14,7 +16,8 @@ type Product struct {
 }
 
 type ProductHandlerCfg struct {
-	Repo *Repo
+	Repo   *Repo
+	Config *configs.Config
 }
 
 type ProductHandler struct {

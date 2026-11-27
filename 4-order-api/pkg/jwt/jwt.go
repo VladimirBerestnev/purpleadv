@@ -1,13 +1,13 @@
 package jwt
 
-import "github.com/golang-jwt/jwt/v5"
+import (
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+)
 
 type JWT struct {
 	Secret string
-}
-
-type TokenResponse struct {
-	Token string `json:"token"`
 }
 
 func NewJWT(secret string) *JWT {
@@ -17,6 +17,7 @@ func NewJWT(secret string) *JWT {
 func (j *JWT) Create(phone string) (string, error) {
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"phone": phone,
+		"exp":   time.Now().Add(30 * time.Minute).Unix(),
 	})
 	s, err := t.SignedString([]byte(j.Secret))
 	if err != nil {
