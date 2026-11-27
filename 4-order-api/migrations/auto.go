@@ -2,6 +2,7 @@ package main
 
 import (
 	"order-api/pkg/product"
+	"order-api/pkg/user"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -18,7 +19,7 @@ func main() {
 	if err != nil {
 		panic("Error open connection bd")
 	}
-	errMigrate := db.AutoMigrate(&product.Product{})
+	errMigrate := db.AutoMigrate(&product.Product{}, &user.User{})
 	if errMigrate != nil {
 		panic("Migration error")
 	}
