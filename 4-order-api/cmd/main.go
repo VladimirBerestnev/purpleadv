@@ -31,7 +31,8 @@ func main() {
 		AuthService: authService,
 	})
 	product.NewProductHandler(router, product.ProductHandlerCfg{
-		Repo: repo,
+		Repo:   repo,
+		Config: conf,
 	})
 	fmt.Println("Server is running...")
 	server.ListenAndServe()
